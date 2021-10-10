@@ -1,4 +1,4 @@
-print("Welkom bij Papi Gelato je mag alle smaken kiezen zolang het maar vanille ijs is.") # Welcomes the user
+print("Welkom bij Papi Gelato") # Welcomes the user
 
 
 # Ask the user if he wants to buy more
