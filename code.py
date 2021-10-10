@@ -45,6 +45,30 @@ def get_coneChoice(scoops):
 
 
 
+def get_flavour(scoops):
+    first_chars = ["a", "c", "m", "v"] # First character of the flavours
+
+    flavours_chosen = 0
+
+    while int(scoops) > flavours_chosen: 
+
+        flavour = input("Welke smaak wilt u voor bolletje nummer {X}? A) Aardbei, C) Chocolade, M) Munt of V) Vanille?: ").lower()    
+
+
+        try:
+            first_chars.index(flavour) # Check if the user has given a correct character
+        
+        except:
+            print("Sorry dat snap ik niet...")
+                
+
+        else:
+            flavours_chosen += 1 # Add 1 flavour to the total flavours chosen
+
+    get_coneChoice(scoops) # Question if the user wants a cone or a bucket
+
+
+
 
 # Ask the amount of scoops the user wants
 def get_scoops():
@@ -73,7 +97,7 @@ def get_scoops():
         except:
             print("Sorry dat snap ik niet...")
 
-    get_coneChoice(scoops) # Question if the user wants a cone or a bucket
+    get_flavour(scoops) # Question which flavour the user wants
 
 
 get_scoops() # Let the user choose the amount of scoops
