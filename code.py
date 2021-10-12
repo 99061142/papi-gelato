@@ -90,7 +90,7 @@ def user_receipt(items):
         if totalPrice > 0:
             print(itemName + "     " + itemAmount_str + " * " + itemPrice_str +  " = €" + totalPrice_str)
     
-    if topping_items['total'] != 0:
+    if topping_items['total'] > 0:
         print("Topping     " + toppingAmount_str + " + " + toppingTotal + " = €" + toppingTotal)
 
 
