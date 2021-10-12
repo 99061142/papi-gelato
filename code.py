@@ -76,12 +76,12 @@ def add_items(scoops, cone_choice):
     else:
         items[cone_choice]["amount"] += 1 # Add to the cone or the bucket
 
-
     items["bolletje"]["amount"] += scoops # Add the amount of scoops
 
-
-    items["total"] += items[cone_choice]["price"] * scoops # Add the price to the total price
-
+    # Add the price to the total price
+    items["total"] += items[cone_choice]["price"] # Add the price of the cone
+    items["total"] += items["bolletje"]["price"] * scoops # Add the price of the scoop(s)
+    
     return items # Return the items
 
 
@@ -193,14 +193,14 @@ def get_scoops():
         try:
             scoops = int(scoops)
 
-            if scoops < 0: 
-                print("Sorry dat snap ik niet...")
+            if scoops > 0: 
+                break # Go out of the loop
 
             elif scoops > 8:
                 print("Sorry, zulke grote bakken hebben we niet")
 
-            else: 
-                break # Go out of the loop
+            else:
+                print("Sorry dat snap ik niet...")
 
         except ValueError:
             print("Sorry dat snap ik niet...")
