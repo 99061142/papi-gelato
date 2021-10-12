@@ -1,7 +1,9 @@
 print("Welkom bij Papi Gelato") # Welcomes the user
 
 
-def show_receipt(items):
+def user_receipt(items):
+    
+    # Show the user the receipt
     print(
         '---------["Papi Gelato"]---------'
         '\n'
@@ -12,9 +14,10 @@ def show_receipt(items):
 
 
 def add_items(scoops, cone_choice):
+    
     items = "test"
     
-    return items
+    return items # Return the item array
 
 
 
@@ -25,21 +28,22 @@ def receipt_option(scoops, cone_choice):
     
     while True:
 
-        buy_more = input("Hier is uw " + cone_choice + " met " + scoops_str + " bolletje(s). Wilt u nog meer bestellen? (Y/N): ").lower()
+        buy_more = input("Hier is uw " + cone_choice + " met " + scoops_str + " bolletje(s). Wilt u nog meer bestellen? (ja/nee): ").lower()
 
 
-        if buy_more == "n":
-            print("Bedankt en tot ziens!")
-            
-            return True
-            
-        if buy_more == "j" or buy_more == "n":
-            break
+        if buy_more == "ja" or buy_more == "nee":
+
+            if buy_more == "nee":
+                print("Bedankt en tot ziens!")
+
+            show_receipt = False if buy_more == "ja" else True  # Give a value to check if the user wants the receipt
+
+            break # Go out of the loop
 
         else: 
             print("Sorry, dat snap ik niet...")
 
-
+    return show_receipt # Return if the user wants the receipt 
 
 # Ask the user where he wants his cone in
 def get_coneChoice(scoops):
@@ -61,46 +65,51 @@ def get_coneChoice(scoops):
 
     coneChoice = "hoorntje" if coneChoice == "a" else "bakje" # Make the value the option the user has chosen 
 
-    return coneChoice
+    return coneChoice # Return the users choice if he wants a cone or a bucket
 
 
 
+# Ask which flavour the user wants per scoop
 def get_flavour(scoops):
-    options = ""
-    scoop = 1
-    flavour_char = []
+
+    options = "" # All the options the user can choose
+    scoop = 1 # Total flavours chosen
+    flavour_char = [] # First character of the flavours array
 
     flavours = ["Aardbei", "Chocolade", "Munt", "Vanille"] # All the flavours
 
 
+    # Add the first character of the flavours in an array
     for flavour in flavours:
         flavour_char.append(flavour[0])
 
 
+    # Put all the options into the string
     for num, flavour in enumerate(flavours):
         options += flavour_char[num] + ") " + flavour 
 
         if num < 2:
             options += ", "
-        
+
         elif num == 2:
             options += " of "
-        
 
+
+    # Loop through the question
     while scoop <= scoops:
-        
+
         scoop_str = str(scoop)
-    
+
         question_str = "Welke smaak wilt u voor bolletje nummer " + scoop_str + "? " + options + "?: "
 
         flavour = input(question_str).upper()
 
         try:
             flavour_char.index(flavour) # Check if the user has given a correct character
-        
+
         except ValueError:
             print("Sorry dat snap ik niet...")
-                
+
 
         else:
             scoop += 1 # Add 1 flavour to the total flavours chosen
@@ -110,7 +119,10 @@ def get_flavour(scoops):
 
 # Ask the amount of scoops the user wants
 def get_scoops():
+
+    # Loop through the question
     while True:
+
         scoops = input("Hoeveel bolletjes wilt u? ") 
 
         try:
@@ -123,7 +135,7 @@ def get_scoops():
                 print("Sorry, zulke grote bakken hebben we niet")
 
             else: 
-                break
+                break # Go out of the loop
 
         except ValueError:
             print("Sorry dat snap ik niet...")
@@ -133,25 +145,26 @@ def get_scoops():
         print("Dan krijgt u van mij een bakje met", scoops , "bolletjes")
 
 
-    return scoops
+    return scoops # Return the amount of scoops
 
 
 
 
-receipt = False
+show_receipt = False # Variable if the receipt must be shown
 
 
-while not receipt:
+# Loop all the questions ( if the user did not choose to see the receipt )
+while not show_receipt:
     scoops = get_scoops() # Let the user choose the amount of scoops
-    
-    flavour_scoop = get_flavour(scoops) # Get the flavour per scoop
+
+    get_flavour(scoops) # Get the flavour per scoop
 
     if scoops < 4:
         cone_choice = get_coneChoice(scoops) # Question if the user wants a cone or a bucket 
-    
-    receipt = receipt_option(scoops, cone_choice) # Ask the user if he want to buy more, or if he wants the receipt
+
+    show_receipt = receipt_option(scoops, cone_choice) # Ask the user if he want to buy more, or if he wants the receipt
 
     items = add_items(scoops, cone_choice) # Add the items to the receipt
 
-    if receipt:
-        show_receipt(items) # Show the receipt to the usuer
+    if show_receipt:
+        user_receipt(items) # Show the receipt to the usuer
