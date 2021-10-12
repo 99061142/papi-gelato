@@ -1,23 +1,88 @@
+# All the information about the items, and the value the user has given
+items = {
+    "bolletje": {
+        "price": 1.10,
+        "amount": 0,
+    },
+    
+    "hoorntje": {
+        "price": 1.25,
+        "amount": 0,
+    },
+    
+    "bakje": {
+        "price": 0.75,
+        "amount": 0,
+    },
+    
+    "total": 0
+}
+
+show_receipt = False # Variable if the receipt must be shown
+
+
+
+
 print("Welkom bij Papi Gelato") # Welcomes the user
 
 
-def user_receipt(items):
-    
-    # Show the user the receipt
-    print(
-        '---------["Papi Gelato"]---------'
-        '\n'
-    )
 
+
+def user_receipt(items):
+    item_Options = list( items.keys() ) # Get all the keys of the items
+    
+    # Total price for the receipt, and change it to have always 2 decimals
+    total = items["total"]
+    total = f'{total:.2f}'
+
+
+    # Show the user the receipt
+    print('---------["Papi Gelato"]---------') # Receipt head
+
+    # Loop all the keys of the items ( except the total ) 
+    for i in range( len(items) - 1):
+
+        itemName = item_Options[i] # Get the name of the item
+
+        # Amount of the item
+        itemAmount = items[itemName]['amount']
+        itemAmount_str = str(itemAmount)
+        
+        # Price per item
+        itemPrice = items[itemName]['price']
+        itemPrice_str = str(itemPrice)
+
+        # Total price ( amount * price )
+        totalPrice = itemAmount * itemPrice
+
+        totalPrice_str = f'{totalPrice:.2f}' # Let the total always be 2 decimals
+        
+        # Print the calculation on the receipt ( if its > 0 )
+        if totalPrice > 0:
+            print(itemName + "     " + itemAmount_str + " * " + itemPrice_str +  " = €" + totalPrice_str)
+
+    # Show the total price under the items
+    print('                              ---- +')
+    print('Totaal                   = €', total)
 
 
 
 
 def add_items(scoops, cone_choice):
     
-    items = "test"
-    
-    return items # Return the item array
+    if scoops >= 4:
+        items["bakje"]["amount"] += 1 # Add to the bakje
+
+    else:
+        items[cone_choice]["amount"] += 1 # Add to the cone or the bucket
+
+
+    items["bolletje"]["amount"] += scoops # Add the amount of scoops
+
+
+    items["total"] += items[cone_choice]["price"] * scoops # Add the price to the total price
+
+    return items # Return the items
 
 
 
@@ -150,9 +215,6 @@ def get_scoops():
 
 
 
-show_receipt = False # Variable if the receipt must be shown
-
-
 # Loop all the questions ( if the user did not choose to see the receipt )
 while not show_receipt:
     scoops = get_scoops() # Let the user choose the amount of scoops
@@ -167,4 +229,4 @@ while not show_receipt:
     items = add_items(scoops, cone_choice) # Add the items to the receipt
 
     if show_receipt:
-        user_receipt(items) # Show the receipt to the usuer
+        user_receipt(items) # Show the receipt to the user
