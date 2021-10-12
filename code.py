@@ -1,7 +1,7 @@
 # All the information about the items, and the value the user has given
 items = {
-    "bolletje": {
-        "price": 1.10,
+    "bolletjes": {
+        "price": 1.1,
         "amount": 0,
     },
     
@@ -14,9 +14,29 @@ items = {
         "price": 0.75,
         "amount": 0,
     },
-    
+
     "total": 0
 }
+
+
+# All the prices for the toppings
+topping_items = {
+    "geen": 0,
+
+    "slagroom": 0.5,
+
+    "sprinkels": 0.3,
+
+    "caramel saus": {
+        "hoorntje": 0.6,
+        "bakje": 0.9
+    },
+
+    "amount": 0,
+
+    "total": 0
+}
+
 
 show_receipt = False # Variable if the receipt must be shown
 
@@ -27,13 +47,22 @@ print("Welkom bij Papi Gelato") # Welcomes the user
 
 
 
-
+# Show the receipt to the user
 def user_receipt(items):
+
     item_Options = list( items.keys() ) # Get all the keys of the items
     
     # Total price for the receipt, and change it to have always 2 decimals
-    total = items["total"]
+    total = items['total'] + topping_items['total']
     total = f'{total:.2f}'
+
+    # Total price for the toppings
+    toppingTotal = topping_items['total']
+    toppingTotal = f'{toppingTotal:.2f}'
+
+    # Amount of different toppings
+    toppingAmount = topping_items['amount']
+    toppingAmount_str = str(toppingAmount)
 
 
     # Show the user the receipt
@@ -60,28 +89,47 @@ def user_receipt(items):
         # Print the calculation on the receipt ( if its > 0 )
         if totalPrice > 0:
             print(itemName + "     " + itemAmount_str + " * " + itemPrice_str +  " = €" + totalPrice_str)
+    
+    if topping_items['total'] != 0:
+        print("Topping     " + toppingAmount_str + " + " + toppingTotal + " = €" + toppingTotal)
+
 
     # Show the total price under the items
-    print('                              ---- +')
-    print('Totaal                   = €', total)
+    print('                             ---- +')
+    print('Totaal                   = €' + total)
 
 
 
 
-def add_items(scoops, cone_choice):
+# Add the items to the receipt
+def add_items(scoops, cone_choice, topping):
     
     if scoops >= 4:
-        items["bakje"]["amount"] += 1 # Add to the bakje
+        items['bakje']['amount'] += 1 # Add to the bakje
 
     else:
-        items[cone_choice]["amount"] += 1 # Add to the cone or the bucket
+        items[cone_choice]['amount'] += 1 # Add to the cone or the bucket
 
-    items["bolletje"]["amount"] += scoops # Add the amount of scoops
+    items['bolletjes']['amount'] += scoops # Add the amount of scoops
 
     # Add the price to the total price
-    items["total"] += items[cone_choice]["price"] # Add the price of the cone
-    items["total"] += items["bolletje"]["price"] * scoops # Add the price of the scoop(s)
+    items['total'] += items[cone_choice]['price'] # Add the price of the cone
+    items['total'] += items['bolletjes']['price'] * scoops # Add the price of the scoop(s)
     
+
+    # Add the price of the topping to the total topping price
+    
+    if topping == "caramel saus":
+        topping_items['total'] += topping_items[topping][cone_choice]
+    
+    else:
+        topping_items['total'] += topping_items[topping]
+
+
+    if topping != "geen":
+        topping_items['amount'] += 1 # Add the amount of toppings chosen
+
+
     return items # Return the items
 
 
@@ -109,6 +157,50 @@ def receipt_option(scoops, cone_choice):
             print("Sorry, dat snap ik niet...")
 
     return show_receipt # Return if the user wants the receipt 
+
+
+
+
+def get_topping():
+
+    options = "" # All the options the user can choose
+
+
+    toppings = list( topping_items.keys() ) # All the toppingss
+
+    topping_char = ["A", "B", "C", "D"] # First characters to choose form
+
+
+    # Put all the options into the string
+    for num in range( len(toppings) - 2):
+        options += topping_char[num] + ") " + toppings[num].capitalize()
+
+        if num < 2:
+            options += ", "
+
+        elif num == 2:
+            options += " of "
+
+
+    while True:
+        question_str = "Wat voor topping wilt u: " + options + "?: " # Make a string for the input
+        
+        topping = input(question_str).upper()
+
+        try:
+            num = topping_char.index(topping) # Check if the user has given a correct character
+            topping = toppings[num] # Get the topping
+
+        except ValueError:
+            print("Sorry dat snap ik niet...")
+
+        else:
+            break # Break the loop
+
+
+    return topping # Return the topping the user has chosen
+
+
 
 # Ask the user where he wants his cone in
 def get_coneChoice(scoops):
@@ -221,12 +313,19 @@ while not show_receipt:
 
     get_flavour(scoops) # Get the flavour per scoop
 
+
     if scoops < 4:
         cone_choice = get_coneChoice(scoops) # Question if the user wants a cone or a bucket 
+    
+    else:
+        cone_choice = "bakje" # If the user has 4-8 scoops, it gets automatically a bakje
+
+
+    topping = get_topping() # Ask for a topping
 
     show_receipt = receipt_option(scoops, cone_choice) # Ask the user if he want to buy more, or if he wants the receipt
 
-    items = add_items(scoops, cone_choice) # Add the items to the receipt
+    items = add_items(scoops, cone_choice, topping) # Add the items to the receipt
 
     if show_receipt:
         user_receipt(items) # Show the receipt to the user
