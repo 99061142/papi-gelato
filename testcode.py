@@ -1,7 +1,7 @@
 # Item information and prices
 items = {
     "bolletjes": {
-        "price": 1.1,
+        "price": 0.95,
         "amount": 0,
     },
 
