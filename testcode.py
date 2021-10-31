@@ -137,7 +137,7 @@ def scoop_flavours(scoops: int):
     choosing_flavours = True # Check if all the scoops have gotten a flavour
     flavour_chosen = False # Check per scoop if the flavour is chosen
 
-    flavours = ("Aardbei", "Chocolada", "Munt", "Vanille") # All the flavours the user can choose from
+    flavours = ("Aardbei", "Chocolada", "Vanille") # All the flavours the user can choose from
     flavours_first = [] # First letter of the flavour
 
     question = "Welke smaak wilt u voor bolletje nummer {}? " # The start of the question
