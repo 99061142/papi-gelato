@@ -54,7 +54,7 @@ toppings = {
 
 buy_more = True # If the user did not choose to see the receipt
 
-error_message = "Sorry dat snap ik niet..."
+error_message = "Sorry dat is geen optie die we aanbieden..."
 
 print("Welkom bij Papi Gelato") # Welcomes the user
 
@@ -316,4 +316,3 @@ while buy_more:
 # If the user does not want to buy more ice
 else:
     print("Bedankt en tot ziens!")
-    
