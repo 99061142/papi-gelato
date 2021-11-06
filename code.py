@@ -378,7 +378,7 @@ def show_receipt(role:str, business_btw:int):
 # When the program starts
 if __name__ == "__main__":
     buy_more = True # If the user wants to buy more items
-    business_btw = 9 # BTW percentage for the total price ( if the user is not a customer )
+    business_btw = 6 # BTW percentage for the total price ( if the user is not a customer )
     error_message = "Sorry dat is geen optie die we aanbieden..." # Error message for a wrong input
 
 
