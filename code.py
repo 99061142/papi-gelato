@@ -46,6 +46,203 @@ show_receipt = False # Variable if the receipt must be shown
 print("Welkom bij Papi Gelato") # Welcomes the user
 
 
+def customer():
+    rank = input("Bent u 1) particulier of 2) zakelijk?")
+
+
+
+# Ask the amount of scoops the user wants
+
+def get_scoops():
+    
+    choose_scoopAmount = True
+
+    # Loop through the question
+    while choose_scoopAmount:
+
+        scoops = input("Hoeveel bolletjes wilt u? ") 
+
+        try:
+            val = int(scoops)
+
+            if val > 0: 
+                choose_scoopAmount = False # Stop the loop
+
+            elif scoops > 8:
+                print("Sorry, zulke grote bakken hebben we niet")
+
+            else:
+                print("Sorry dat snap ik niet...")
+
+        except ValueError:
+            print("Sorry dat snap ik niet...")
+    
+
+        else:
+            if val >= 4:
+                print("Dan krijgt u van mij een bakje met", scoops , "bolletjes")
+
+
+    return scoops # Return the amount of scoops
+
+
+
+# Ask which flavour the user wants per scoop
+
+def get_flavour(scoops):
+
+    options = "" # All the options the user can choose
+    scoop = 1 # Total flavours chosen
+
+    flavours = ["Aardbei", "Chocolade", "Munt", "Vanille"] # All the flavours
+    flavour_char = [] # First character of the flavours array
+
+
+    # Add the first character of the flavours in an array
+    for flavour in flavours:
+        flavour_char.append(flavour[0])
+
+
+    # Put all the options into the string
+    for num, flavour in enumerate(flavours):
+        options += flavour_char[num] + ") " + flavour 
+
+        if num < 2:
+            options += ", "
+
+        elif num == 2:
+            options += " of "
+
+
+    # Loop through the question
+    while scoop <= int(scoops):
+
+        question = "Welke smaak wilt u voor bolletje nummer " + scoops + "? " + options + "?: "
+
+        flavour = input(question).upper()
+
+        try:
+            flavour_char.index(flavour) # Check if the user has given a correct character
+
+        except ValueError:
+            print("Sorry dat snap ik niet...")
+
+
+        else:
+            scoop += 1 # Add 1 flavour to the total flavours chosen
+
+
+
+
+
+# Ask the user where he wants his scoops in
+
+def get_coneChoice(scoops):
+
+    coneChoosing = True
+
+    
+    question = "Wilt u deze " + scoops +  " bolletje(s) in A) een hoorntje of B) een bakje?: " 
+    
+    while coneChoosing:
+
+        coneChoice = input(question).lower()
+
+        if coneChoice == "a" or coneChoice == "b":
+            coneChoosing = False
+
+        else:
+            print("Sorry dat snap ik niet...")
+
+
+    coneChoice = "hoorntje" if coneChoice == "a" else "bakje" # Make the value the option the user has chosen 
+
+    return coneChoice # Return the users choice if he wants a cone or a bucket
+
+
+
+
+
+# Ask the user which topping he want 
+
+def get_topping():
+
+    chooseTopping = True
+
+    options = "" # All the options the user can choose
+
+    toppings = list( topping_items.keys() ) # All the toppings
+
+    topping_char = ["A", "B", "C", "D"] # First characters to choose form
+
+
+    # Put all the options into the string
+    for num in range( len(toppings) - 2):
+        options += topping_char[num] + ") " + toppings[num].capitalize()
+
+        if num < 2:
+            options += ", "
+
+        elif num == 2:
+            options += " of "
+
+
+    while chooseTopping:
+
+        question = "Wat voor topping wilt u: " + options + "?: " # Make a string for the input
+        
+        topping = input(question).upper()
+
+        try:
+            num = topping_char.index(topping) # Check if the user has given a correct character
+
+        except ValueError:
+            print("Sorry dat snap ik niet...")
+
+        else:
+            topping = toppings[num] # Get the topping
+
+            chooseTopping = False # Break the loop
+
+
+    return topping # Return the topping the user has chosen
+
+
+
+
+# Ask the user if he wants to buy more
+
+def receipt_option(scoops, coneChoice):
+    
+    receiptChoosing = True
+
+    while receiptChoosing:
+
+        string = "Hier is uw " + coneChoice + " met " + scoops + " bolletje(s). Wilt u nog meer bestellen? (ja/nee): "
+        
+        buyMore = input(string).lower()
+
+
+        if buyMore == "ja":
+            show_receipt = True
+
+        elif buyMore == "nee":
+            print("Bedankt en tot ziens!")
+            
+            show_receipt = False
+
+        else: 
+            print("Sorry, dat snap ik niet...")
+
+
+        if buyMore == "ja" or buyMore == "nee":
+            receiptChoosing = False # Go out of the loop
+
+
+    return show_receipt # Return if the user wants the receipt 
+
+
+
 
 # Show the receipt to the user
 def user_receipt(items):
@@ -135,179 +332,8 @@ def add_items(scoops, cone_choice, topping):
 
 
 
-def receipt_option(scoops, cone_choice):
-    
-    scoops_str = str(scoops)
-    
-    while True:
-
-        buy_more = input("Hier is uw " + cone_choice + " met " + scoops_str + " bolletje(s). Wilt u nog meer bestellen? (ja/nee): ").lower()
-
-
-        if buy_more == "ja" or buy_more == "nee":
-
-            if buy_more == "nee":
-                print("Bedankt en tot ziens!")
-
-            show_receipt = False if buy_more == "ja" else True  # Give a value to check if the user wants the receipt
-
-            break # Go out of the loop
-
-        else: 
-            print("Sorry, dat snap ik niet...")
-
-    return show_receipt # Return if the user wants the receipt 
-
-
-
-
-def get_topping():
-
-    options = "" # All the options the user can choose
-
-
-    toppings = list( topping_items.keys() ) # All the toppingss
-
-    topping_char = ["A", "B", "C", "D"] # First characters to choose form
-
-
-    # Put all the options into the string
-    for num in range( len(toppings) - 2):
-        options += topping_char[num] + ") " + toppings[num].capitalize()
-
-        if num < 2:
-            options += ", "
-
-        elif num == 2:
-            options += " of "
-
-
-    while True:
-        question_str = "Wat voor topping wilt u: " + options + "?: " # Make a string for the input
-        
-        topping = input(question_str).upper()
-
-        try:
-            num = topping_char.index(topping) # Check if the user has given a correct character
-            topping = toppings[num] # Get the topping
-
-        except ValueError:
-            print("Sorry dat snap ik niet...")
-
-        else:
-            break # Break the loop
-
-
-    return topping # Return the topping the user has chosen
-
-
-
-# Ask the user where he wants his cone in
-def get_coneChoice(scoops):
-
-    scoop_str = str(scoops)
-    
-    question_str = "Wilt u deze " + scoop_str +  " bolletje(s) in A) een hoorntje of B) een bakje?: "
-    
-    while True:
-
-        coneChoice = input(question_str).lower()
-
-        if coneChoice == "a" or coneChoice == "b":
-            break # Go out of the loop
-
-        else:
-            print("Sorry dat snap ik niet...")
-
-
-    coneChoice = "hoorntje" if coneChoice == "a" else "bakje" # Make the value the option the user has chosen 
-
-    return coneChoice # Return the users choice if he wants a cone or a bucket
-
-
-
-# Ask which flavour the user wants per scoop
-def get_flavour(scoops):
-
-    options = "" # All the options the user can choose
-    scoop = 1 # Total flavours chosen
-    flavour_char = [] # First character of the flavours array
-
-    flavours = ["Aardbei", "Chocolade", "Munt", "Vanille"] # All the flavours
-
-
-    # Add the first character of the flavours in an array
-    for flavour in flavours:
-        flavour_char.append(flavour[0])
-
-
-    # Put all the options into the string
-    for num, flavour in enumerate(flavours):
-        options += flavour_char[num] + ") " + flavour 
-
-        if num < 2:
-            options += ", "
-
-        elif num == 2:
-            options += " of "
-
-
-    # Loop through the question
-    while scoop <= scoops:
-
-        scoop_str = str(scoop)
-
-        question_str = "Welke smaak wilt u voor bolletje nummer " + scoop_str + "? " + options + "?: "
-
-        flavour = input(question_str).upper()
-
-        try:
-            flavour_char.index(flavour) # Check if the user has given a correct character
-
-        except ValueError:
-            print("Sorry dat snap ik niet...")
-
-
-        else:
-            scoop += 1 # Add 1 flavour to the total flavours chosen
-
-
-
-
-# Ask the amount of scoops the user wants
-def get_scoops():
-
-    # Loop through the question
-    while True:
-
-        scoops = input("Hoeveel bolletjes wilt u? ") 
-
-        try:
-            scoops = int(scoops)
-
-            if scoops > 0: 
-                break # Go out of the loop
-
-            elif scoops > 8:
-                print("Sorry, zulke grote bakken hebben we niet")
-
-            else:
-                print("Sorry dat snap ik niet...")
-
-        except ValueError:
-            print("Sorry dat snap ik niet...")
-
-
-    if scoops >= 4:
-        print("Dan krijgt u van mij een bakje met", scoops , "bolletjes")
-
-
-    return scoops # Return the amount of scoops
-
-
-
-
 # Loop all the questions ( if the user did not choose to see the receipt )
+
 while not show_receipt:
     scoops = get_scoops() # Let the user choose the amount of scoops
 
@@ -328,4 +354,4 @@ while not show_receipt:
     items = add_items(scoops, cone_choice, topping) # Add the items to the receipt
 
     if show_receipt:
-        user_receipt(items) # Show the receipt to the user
+        user_receipt() # Show the receipt to the user
